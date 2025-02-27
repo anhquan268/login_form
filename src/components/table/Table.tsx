@@ -1,5 +1,4 @@
-import { useState } from "react";
-import { getRoleStyles } from "../../utils";
+import { useState } from 'react'
 
 function TableHeader() {
   return (
@@ -19,8 +18,28 @@ function TableHeader() {
   )
 }
 
-function TableRow({name, email, role}: {name: string, email: string, role: string}) {
-  const { bg, text, border } = getRoleStyles(role)
+function TableRow({
+  name,
+  email,
+  role
+}: {
+  name: string
+  email: string
+  role: string
+}) {
+  const getRoleClasses = (role: string) => {
+    switch (role) {
+      case 'Admin':
+        return 'bg-red-100 text-red-800'
+      case 'User':
+        return 'bg-blue-100 text-blue-800'
+      case 'Inactive':
+        return 'bg-gray-100 text-gray-800'
+      default:
+        return 'bg-gray-100 text-gray-800'
+    }
+  }
+
   return (
     <tr className="hover:bg-gray-50">
       <td className="px-6 py-4 whitespace-nowrap">
@@ -30,7 +49,11 @@ function TableRow({name, email, role}: {name: string, email: string, role: strin
         <div className="text-sm text-gray-500">{email}</div>
       </td>
       <td className="px-6 py-4 whitespace-nowrap">
-        <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${bg} ${text} ${border}`}>
+        <span
+          className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${getRoleClasses(
+            role
+          )}`}
+        >
           {role}
         </span>
       </td>
@@ -39,10 +62,10 @@ function TableRow({name, email, role}: {name: string, email: string, role: strin
 }
 
 function Table() {
-  const [data, ] = useState([
+  const [data] = useState([
     { name: 'John Doe', email: 'john@example.com', role: 'Admin' },
     { name: 'Jane Smith', email: 'jane@example.com', role: 'User' },
-    { name: 'Jim Beam', email: 'jim@example.com', role: 'Inactive' },
+    { name: 'Jim Beam', email: 'jim@example.com', role: 'Inactive' }
   ])
   return (
     <table className="min-w-full divide-y divide-gray-200">
@@ -50,11 +73,16 @@ function Table() {
 
       <tbody className="bg-white divide-y divide-gray-200">
         {data.map((row, index) => (
-          <TableRow key={index} name = {row.name} email = {row.email} role = {row.role} />
+          <TableRow
+            key={index}
+            name={row.name}
+            email={row.email}
+            role={row.role}
+          />
         ))}
       </tbody>
     </table>
   )
 }
 
-export default Table;
+export default Table
